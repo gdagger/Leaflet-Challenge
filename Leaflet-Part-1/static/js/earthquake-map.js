@@ -11,6 +11,12 @@ function chooseColor(earthquake) {
     else return "rgb(182,244,76)";
 }
 
+// Create function that returns circle marker radius based on the earthquake's magnitude
+function getRadius(magnitude) {
+  if (magnitude === 0) return 1
+  else return magnitude * 4 + 1 ;
+}
+
 // Create function to add legend to map
 function createLegend(map) {
 
@@ -97,7 +103,8 @@ function createMarkers(earthquakes) {
 
   // Loop through features and create circle markers from feature location
   for (let i=0; i<features.length; i++) {
-    let currentFeature = features[i]
+    let currentFeature = features[i];
+    let magnitude = currentFeature.properties.mag;
       earthquakeMarkers.push(
         L.circleMarker([currentFeature.geometry.coordinates[1], features[i].geometry.coordinates[0]], {
             stroke: true,
@@ -105,7 +112,7 @@ function createMarkers(earthquakes) {
             color: "black",
             fillColor: chooseColor(currentFeature.geometry.coordinates[2]),
             weight: 1,
-            radius: (features[i].properties.mag) * 4,
+            radius: (getRadius(magnitude)),
           }).on({
             mouseover: function(event) {
                 layer = event.target;
